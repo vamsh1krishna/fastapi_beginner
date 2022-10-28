@@ -1,20 +1,26 @@
 from fastapi import APIRouter,Depends,HTTPException,status
 from sqlalchemy.orm import Session
+from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordRequestForm
 
 from ..hashing import Hash
 from ..database import get_db
 from .. import schemas,models
+from .. import token_process
+
 
 router = APIRouter(
     tags = ["Authentication"]
 )
 
 @router.post('/login')
-def login(request:schemas.Login,db:Session=Depends(get_db)):
+def login(request:OAuth2PasswordRequestForm=Depends(),db:Session=Depends(get_db)):
     user = db.query(models.User).filter(models.User.email==request.username).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"no user available with username {request.username}")
     if not Hash.verify(request.password,user.password):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Invalid credentials")
-    # Generate JWT token if password verified
-    return 'login'
+    # Generate JWT token_process if password verified
+    access_token = token_process.create_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer"}
+    return 'login '
