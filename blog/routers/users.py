@@ -3,6 +3,7 @@ from typing import Optional,List
 from sqlalchemy.orm import Session
 
 from .. import schemas,models,database
+from ..hashing import Hash
 
 router = APIRouter(
     prefix = '/user',
