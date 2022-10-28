@@ -1,0 +1,6 @@
+__pycache__
+*.sqbpro
+fastapi-venv
+.vscode
+venv
+env
