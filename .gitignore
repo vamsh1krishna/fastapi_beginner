@@ -70,6 +70,9 @@ db.sqlite3-journal
 # instance/
 .webassets-cache
 
+#Fast-api db
+*.sqbpro
+
 #scrapy stuff:
 .scrapy
 
